@@ -1,34 +1,11 @@
-import * as express from 'express';
-import * as bodyParser from 'body-parser';
+import App from "./app";
+import PostsController from "./posts/posts.controller";
 
-function loggerMiddleware(request: express.Request, response: express.Response, next: express.NextFunction) {
-    console.log(`${request.method} ${request.path}`);
-    next();
-}
+const app = new App(
+    [
+        new PostsController(),
+    ],
+    5000,
+);
 
-const app = express();
-const router = express.Router();
-
-router.get('/', (request, response) => {
-    response.send({
-        hostname: request.hostname,
-        path: request.path,
-        method: request.method,
-    });
-});
-
-router.post('/', (request, response) => {
-    response.send(request.body);
-});
-
-router.get('/hello', (request, response) => {
-    response.send('Hello world!');
-});
-
-
-app.use(loggerMiddleware);
-app.use(bodyParser.json());
-app.use('/api', router);
-
-
-app.listen(5000);
+app.listen();

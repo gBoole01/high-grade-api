@@ -7,17 +7,19 @@ function loggerMiddleware(request: express.Request, response: express.Response, 
 }
 
 const app = express();
+const router = express.Router();
 
-
-app.use(loggerMiddleware);
-app.use(bodyParser.json());
-
-app.get('/hello', (request, response) => {
+router.get('/hello', (request, response) => {
     response.send('Hello world!');
 });
 
-app.post('/', (request, response) => {
+router.post('/', (request, response) => {
     response.send(request.body);
-  });
+});
+
+app.use(loggerMiddleware);
+app.use(bodyParser.json());
+app.use('/api', router);
+
 
 app.listen(5000);

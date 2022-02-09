@@ -9,13 +9,22 @@ function loggerMiddleware(request: express.Request, response: express.Response, 
 const app = express();
 const router = express.Router();
 
-router.get('/hello', (request, response) => {
-    response.send('Hello world!');
+router.get('/', (request, response) => {
+    response.send({
+        hostname: request.hostname,
+        path: request.path,
+        method: request.method,
+    });
 });
 
 router.post('/', (request, response) => {
     response.send(request.body);
 });
+
+router.get('/hello', (request, response) => {
+    response.send('Hello world!');
+});
+
 
 app.use(loggerMiddleware);
 app.use(bodyParser.json());

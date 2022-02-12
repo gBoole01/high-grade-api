@@ -2,7 +2,7 @@ version: "3.8"
 services:
     mongodb:
         image : mongo
-        container_name: mongodb
+        container_name: high_grade_api_mongo_db
         environment:
             - MONGO_INITDB_ROOT_USERNAME=root
             - MONGO_INITDB_ROOT_PASSWORD=root
@@ -21,7 +21,7 @@ services:
         restart: unless-stopped
     mongo-express:
         image: mongo-express
-        container_name: mongo-express
+        container_name: high_grade_api_mongo_express
         environment:
             - ME_CONFIG_MONGODB_SERVER=mongodb
             - ME_CONFIG_MONGODB_ENABLE_ADMIN=True

@@ -1,8 +1,8 @@
 import * as express from 'express';
-import HttpException from '../exceptions/HttpException';
 import Controller from '../interfaces/controller.interface';
 import Post from './post.interface';
 import postModel from './posts.model';
+import PostNotFoundException from 'exceptions/PostNotFoundException';
 
 class PostsController implements Controller {
     public path = '/posts';
@@ -37,7 +37,7 @@ class PostsController implements Controller {
                 if (post) {
                     response.send(post);
                 }
-                next(new HttpException (404, 'Post not found' ));
+                next(new PostNotFoundException(id));
             });
     }
 
@@ -50,23 +50,26 @@ class PostsController implements Controller {
             });
     }
 
-    updatePost = (request: express.Request, response: express.Response) => {
+    updatePost = (request: express.Request, response: express.Response, next: express.NextFunction) => {
         const { id } = request.params;
         const postData: Post = request.body;
         this.postModel.findByIdAndUpdate(id, postData, { new: true })
-            .then(updatedPost => {
-                response.send(updatedPost);
+            .then(post => {
+                if (post) {
+                    response.send(post);
+                }
+                next(new PostNotFoundException(id));
             });
     }
 
-    deletePost = (request: express.Request, response: express.Response) => {
+    deletePost = (request: express.Request, response: express.Response, next: express.NextFunction) => {
         const { id } = request.params;
         this.postModel.findByIdAndDelete(id)
             .then(successResponse => {
                 if (successResponse) {
                     response.sendStatus(200);
                 }
-                response.sendStatus(404);
+                next(new PostNotFoundException(id));
             });
     }
 }

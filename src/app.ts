@@ -1,18 +1,16 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import { MongoClient } from 'mongodb';
+import * as mongoose from 'mongoose';
 import dbConnectionURL from './config/db';
 
 class App {
     public app: express.Application;
     public port: number;
-    public mongoClient: any;
     public dbConnectionURL: string;
 
     constructor(controllers, port) {
         this.app = express();
         this.port = port;
-        this.mongoClient = MongoClient;
         this.dbConnectionURL = dbConnectionURL;
 
         this.initializeMiddlewares();
@@ -31,12 +29,7 @@ class App {
     }
 
     private connectToTheDatabase(){
-        this.mongoClient.connect(this.dbConnectionURL, (err) => {
-            if (err) {
-                throw new Error('DB did not connect !'); // TODO => Create Exception
-            }
-            console.log('Database Succesfully connected !'); // TODO => Implement better logger
-        });
+        mongoose.connect(this.dbConnectionURL);
     }
 
     public listen() {

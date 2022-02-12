@@ -5,8 +5,8 @@ import dbConnectionURL from './config/db';
 
 class App {
     public app: express.Application;
-    public port: number;
-    public dbConnectionURL: string;
+    private port: number;
+    private dbConnectionURL: string;
 
     constructor(controllers, port) {
         this.app = express();

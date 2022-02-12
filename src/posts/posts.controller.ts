@@ -1,5 +1,6 @@
 import * as express from 'express';
-import Controller from 'interfaces/controller.interface';
+import HttpException from '../exceptions/HttpException';
+import Controller from '../interfaces/controller.interface';
 import Post from './post.interface';
 import postModel from './posts.model';
 
@@ -29,14 +30,14 @@ class PostsController implements Controller {
             });
     }
 
-    getPostById = (request: express.Request, response: express.Response) => {
+    getPostById = (request: express.Request, response: express.Response, next: express.NextFunction) => {
         const { id } = request.params;
         this.postModel.findById(id)
             .then(post => {
                 if (post) {
                     response.send(post);
                 }
-                response.status(404).send({ error: 'Post not found' });
+                next(new HttpException (404, 'Post not found' ));
             });
     }
 

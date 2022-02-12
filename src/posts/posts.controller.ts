@@ -33,7 +33,10 @@ class PostsController implements Controller {
         const { id } = request.params;
         this.postModel.findById(id)
             .then(post => {
-                response.send(post);
+                if (post) {
+                    response.send(post);
+                }
+                response.status(404).send({ error: 'Post not found' });
             });
     }
 
@@ -59,7 +62,7 @@ class PostsController implements Controller {
         const { id } = request.params;
         this.postModel.findByIdAndDelete(id)
             .then(successResponse => {
-                if(successResponse) {
+                if (successResponse) {
                     response.sendStatus(200);
                 }
                 response.sendStatus(404);

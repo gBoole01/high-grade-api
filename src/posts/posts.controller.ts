@@ -7,20 +7,13 @@ class PostsController {
 
     public router = express.Router();
 
-    private posts: Post[] = [
-        {
-            author: 'Marcin',
-            content: 'Dolor sit amet',
-            title: 'Lorem Ipsum'
-        }
-    ];
-
     constructor() {
         this.initializeRoutes();
     }
 
     public initializeRoutes() {
         this.router.get(this.path, this.getAllPosts);
+        this.router.get(`${this.path}/:id`, this.getPostById);
         this.router.post(this.path, this.createAPost);
     }
 
@@ -28,6 +21,14 @@ class PostsController {
         postModel.find()
             .then(posts => {
                 response.send(posts);
+            });
+    }
+
+    getPostById = (request: express.Request, response: express.Response) => {
+        const { id } = request.params;
+        postModel.findById(id)
+            .then(post => {
+                response.send(post);
             });
     }
 

@@ -1,5 +1,6 @@
 import * as express from 'express';
 import Post from './post.interface';
+import postModel from './posts.model';
 
 class PostsController {
     public path = '/posts';
@@ -23,14 +24,20 @@ class PostsController {
         this.router.post(this.path, this.createAPost);
     }
 
-    getAllPosts = (request: express.Request, response: express.Response) => {
-        response.send(this.posts);
+    getAllPosts = (_request: express.Request, response: express.Response) => {
+        postModel.find()
+            .then(posts => {
+                response.send(posts);
+            });
     }
 
     createAPost = (request: express.Request, response: express.Response) => {
-        const post: Post = request.body;
-        this.posts.push(post);
-        response.send(post);
+        const postData: Post = request.body;
+        const createdPost = new postModel(postData);
+        createdPost.save()
+            .then(savedPost => {
+                response.send(savedPost);
+            });
     }
 }
 

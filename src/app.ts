@@ -25,7 +25,7 @@ class App {
 
     public listen() {
         this.app.listen(this.port, () => {
-            console.log(`App listening on the port ${this.port}`);
+            console.log(`App listening on the port ${this.port}`); // TODO => Implement better logger
         });
     }
 }

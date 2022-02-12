@@ -2,7 +2,7 @@ import * as express from 'express';
 import Controller from '../interfaces/controller.interface';
 import Post from './post.interface';
 import postModel from './posts.model';
-import PostNotFoundException from 'exceptions/PostNotFoundException';
+import PostNotFoundException from '../exceptions/PostNotFoundException';
 
 class PostsController implements Controller {
     public path = '/posts';

@@ -9,7 +9,7 @@ import EmailAlreadyInUseException from '../exceptions/EmailAlreadyInUseException
 import WrongCredentialsException from '../exceptions/WrongCredentialsException';
 
 class AuthenticationController implements Controller {
-    public path = 'auth';
+    public path = '/auth';
 
     public router = express.Router();
 
@@ -19,7 +19,7 @@ class AuthenticationController implements Controller {
         this.initializeRoutes();
     }
 
-    private initializeRoutes(){
+    private initializeRoutes() {
         this.router.post(`${this.path}/register`, validationMiddleware(CreateUserDto), this.registration);
         this.router.post(`${this.path}/login`, validationMiddleware(LogInDto), this.loggingIn);
     }
@@ -28,14 +28,15 @@ class AuthenticationController implements Controller {
         const userData: CreateUserDto = request.body;
         if (await this.user.findOne({ email: userData.email })) {
             next(new EmailAlreadyInUseException(userData.email));
+        } else {
+            const hashedPassword = await bcrypt.hash(userData.password, 10);
+            const user = await this.user.create({
+                ...userData,
+                password: hashedPassword,
+            });
+            user.password = undefined;
+            response.send(user);
         }
-        const hashedPassword = await bcrypt.hash(userData.password, 10);
-        const user = await this.user.create({
-            ...userData,
-            password: hashedPassword,
-        });
-        user.password = undefined;
-        response.send(user);
     }
 
     private loggingIn = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
@@ -46,10 +47,12 @@ class AuthenticationController implements Controller {
             if (isPasswordMatching) {
                 user.password = undefined;
                 response.send(user);
+            } else {
+                next(new WrongCredentialsException());
             }
+        } else {
             next(new WrongCredentialsException());
         }
-        next(new WrongCredentialsException());
     }
 }
 

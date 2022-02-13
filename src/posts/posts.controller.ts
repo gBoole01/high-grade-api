@@ -21,7 +21,7 @@ class PostsController implements Controller {
         this.router.get(this.path, this.getAllPosts);
         this.router.get(`${this.path}/:id`, this.getPostById);
         this.router.post(this.path, validationMiddleware(CreatePostDto), this.createPost);
-        this.router.patch(`${this.path}/:id`, this.updatePost);
+        this.router.patch(`${this.path}/:id`, validationMiddleware(CreatePostDto, true), this.updatePost);
         this.router.delete(`${this.path}/:id`, this.deletePost);
     }
 

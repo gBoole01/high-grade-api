@@ -9,4 +9,5 @@
 - Add Logger
 - Add Husky
 - Add Error Management System
+- Add Validation
 - Add Authentication

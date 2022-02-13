@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export default class CreatePostDto {
+class CreatePostDto {
     @IsString()
     public author: string;
 
@@ -10,3 +10,5 @@ export default class CreatePostDto {
     @IsString()
     public title: string;
 }
+
+export default CreatePostDto;

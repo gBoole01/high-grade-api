@@ -6,5 +6,6 @@ export default function validateEnv() {
         MONGODB_USER: str(),
         MONGODB_PASSWORD: str(),
         MONGODB_URL: str(),
+        JWT_SECRET_KEY: str(),
     })
 }

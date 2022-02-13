@@ -1,7 +1,9 @@
 import * as express from 'express';
 import Controller from '../interfaces/controller.interface';
+import validationMiddleware from '../middlewares/validation.middleware';
 import Post from './post.interface';
 import postModel from './posts.model';
+import CreatePostDto from './post.dto';
 import PostNotFoundException from '../exceptions/PostNotFoundException';
 
 class PostsController implements Controller {
@@ -18,7 +20,7 @@ class PostsController implements Controller {
     public initializeRoutes() {
         this.router.get(this.path, this.getAllPosts);
         this.router.get(`${this.path}/:id`, this.getPostById);
-        this.router.post(this.path, this.createPost);
+        this.router.post(this.path, validationMiddleware(CreatePostDto), this.createPost);
         this.router.patch(`${this.path}/:id`, this.updatePost);
         this.router.delete(`${this.path}/:id`, this.deletePost);
     }

@@ -11,4 +11,4 @@ const app = new App(
     5000,
 );
 
-app.listen(); // TODO => Chain this action with completion of mongoClient.connect
+app.listen();

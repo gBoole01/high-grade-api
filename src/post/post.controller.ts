@@ -46,17 +46,15 @@ class PostController implements Controller {
             });
     }
 
-    createPost = (request: RequestWithUser, response: express.Response) => {
-        const postData: Post = request.body;
-        console.log(postData);
+    createPost = async (request: RequestWithUser, response: express.Response) => {
+        const postData: CreatePostDto = request.body;
         const createdPost = new this.postModel({
             ...postData,
-            authorId: request.user._id,
+            author: request.user._id,
         });
-        createdPost.save()
-            .then(savedPost => {
-                response.send(savedPost);
-            });
+        const savedPost = await createdPost.save();
+        await savedPost.populate('author', '-password');
+        response.send(savedPost);
     }
 
     updatePost = (request: express.Request, response: express.Response, next: express.NextFunction) => {

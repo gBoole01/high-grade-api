@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import userModel from '../users/user.model';
 import AuthenticationTokenData from '../interfaces/AuthenticationTokenData.interface';
 import DataStoredInAuthenticationToken from '../interfaces/DataStoredInAuthenticationToken.interface';
-import User from '../users/user.interface';
+import User from '../interfaces/User.interface';
 import CreateUserDto from '../users/user.dto';
 import EmailAlreadyInUseException from '../exceptions/EmailAlreadyInUseException';
 

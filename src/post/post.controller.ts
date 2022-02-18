@@ -1,12 +1,14 @@
 import * as express from 'express';
-import Controller from '../interfaces/controller.interface';
-import validationMiddleware from '../middlewares/validation.middleware';
-import Post from './post.interface';
-import postModel from './posts.model';
-import CreatePostDto from './post.dto';
+import Controller from '../interfaces/Controller.interface';
+import Post from '../interfaces/Post.interface';
 import PostNotFoundException from '../exceptions/PostNotFoundException';
+import authenticationMiddleware from '../middlewares/authentication.middleware';
+import validationMiddleware from '../middlewares/validation.middleware';
+import postModel from './post.model';
+import CreatePostDto from './post.dto';
+import RequestWithUser from 'interfaces/RequestWithUser.interface';
 
-class PostsController implements Controller {
+class PostController implements Controller {
     public path = '/posts';
 
     public router = express.Router();
@@ -18,11 +20,12 @@ class PostsController implements Controller {
     }
 
     public initializeRoutes() {
-        this.router.get(this.path, this.getAllPosts);
-        this.router.get(`${this.path}/:id`, this.getPostById);
-        this.router.post(this.path, validationMiddleware(CreatePostDto), this.createPost);
-        this.router.patch(`${this.path}/:id`, validationMiddleware(CreatePostDto, true), this.updatePost);
-        this.router.delete(`${this.path}/:id`, this.deletePost);
+        this.router
+            .get(this.path, this.getAllPosts)
+            .get(`${this.path}/:id`, this.getPostById)
+            .post(this.path, authenticationMiddleware, validationMiddleware(CreatePostDto), this.createPost)
+            .patch(`${this.path}/:id`, authenticationMiddleware, validationMiddleware(CreatePostDto, true), this.updatePost)
+            .delete(`${this.path}/:id`, authenticationMiddleware, this.deletePost);
     }
 
     getAllPosts = (_request: express.Request, response: express.Response) => {
@@ -43,13 +46,15 @@ class PostsController implements Controller {
             });
     }
 
-    createPost = (request: express.Request, response: express.Response) => {
-        const postData: Post = request.body;
-        const createdPost = new this.postModel(postData);
-        createdPost.save()
-            .then(savedPost => {
-                response.send(savedPost);
-            });
+    createPost = async (request: RequestWithUser, response: express.Response) => {
+        const postData: CreatePostDto = request.body;
+        const createdPost = new this.postModel({
+            ...postData,
+            author: request.user._id,
+        });
+        const savedPost = await createdPost.save();
+        await savedPost.populate('author', '-password');
+        response.send(savedPost);
     }
 
     updatePost = (request: express.Request, response: express.Response, next: express.NextFunction) => {
@@ -76,4 +81,4 @@ class PostsController implements Controller {
     }
 }
 
-export default PostsController;
+export default PostController;

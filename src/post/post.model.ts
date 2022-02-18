@@ -3,6 +3,7 @@ import Post from '../interfaces/Post.interface';
 
 const postSchema = new mongoose.Schema({
     author: String,
+    authorId: String,
     content: String,
     title: String,
 });

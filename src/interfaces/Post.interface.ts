@@ -1,5 +1,7 @@
+import User from "./User.interface";
+
 interface Post {
-    author: string;
+    author: User;
     content: string;
     title: string;
 }

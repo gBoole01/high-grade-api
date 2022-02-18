@@ -7,7 +7,7 @@ import userModel from '../users/user.model';
 import validationMiddleware from '../middlewares/validation.middleware';
 import AuthenticationTokenData from 'interfaces/AuthenticationTokenData.interface';
 import DataStoredInAuthenticationToken from 'interfaces/DataStoredInAuthenticationToken.interface';
-import User from 'users/user.interface';
+import User from 'interfaces//User.interface';
 import CreateUserDto from '../users/user.dto';
 import LogInDto from './logIn.dto';
 import WrongCredentialsException from '../exceptions/WrongCredentialsException';

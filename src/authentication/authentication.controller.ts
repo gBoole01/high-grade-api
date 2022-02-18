@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
-import Controller from '../interfaces/controller.interface';
+import Controller from '../interfaces/Controller.interface';
 import AuthenticationService from './authentication.service';
 import userModel from '../users/user.model';
 import validationMiddleware from '../middlewares/validation.middleware';

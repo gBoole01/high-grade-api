@@ -24,6 +24,7 @@ class App {
 
     private initializeMiddlewares() {
         this.app.use(bodyParser.json());
+        this.app.use(cookieParser());
     }
 
     private initializeControllers(controllers: Controller[]) {
@@ -33,8 +34,6 @@ class App {
     }
 
     private initializeErrorHandling() {
-        this.app.use(bodyParser.json());
-        this.app.use(cookieParser());
         this.app.use(errorMiddleware);
     }
 

@@ -1,9 +1,10 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 import * as mongoose from 'mongoose';
 import dbConnectionURL from './config/db';
+import Controller from './interfaces/Controller.interface';
 import errorMiddleware from './middlewares/error.middleware';
-import Controller from 'interfaces/controller.interface';
 
 class App {
     public app: express.Application;
@@ -32,6 +33,8 @@ class App {
     }
 
     private initializeErrorHandling() {
+        this.app.use(bodyParser.json());
+        this.app.use(cookieParser());
         this.app.use(errorMiddleware);
     }
 

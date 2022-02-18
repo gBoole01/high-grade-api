@@ -5,13 +5,13 @@ import DataStoredInAuthenticationToken from "../interfaces/DataStoredInAuthentic
 import userModel from "../users/user.model";
 import WrongAuthenticationTokenException from "../exceptions/WrongAuthenticationTokenException";
 
-async function authenticationMiddleware(request: RequestWithUser, response: Response, next: NextFunction) {
-    const { cookies } = request
+async function authenticationMiddleware(request: RequestWithUser, _response: Response, next: NextFunction) {
+    const { cookies } = request;
     if (cookies && cookies.Authorization) {
         const secret = process.env.JWT_SECRET_KEY;
         try {
-            const verifcationResponse = jwt.verify(cookies.Authorization, secret) as DataStoredInAuthenticationToken;
-            const { _id } = verifcationResponse;
+            const verificationResponse = jwt.verify(cookies.Authorization, secret) as DataStoredInAuthenticationToken;
+            const { _id } = verificationResponse;
             const user = await userModel.findById(_id);
             if (user) {
                 request.user = user;

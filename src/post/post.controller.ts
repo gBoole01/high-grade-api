@@ -28,14 +28,13 @@ class PostController implements Controller {
             .delete(`${this.path}/:id`, authenticationMiddleware, this.deletePost);
     }
 
-    getAllPosts = (_request: express.Request, response: express.Response) => {
-        this.postModel.find()
-            .then(posts => {
-                response.send(posts);
-            });
+    private getAllPosts = async (_request: express.Request, response: express.Response) => {
+        const posts = await this.postModel.find()
+            .populate('author', '-password');
+        response.send(posts);
     }
 
-    getPostById = (request: express.Request, response: express.Response, next: express.NextFunction) => {
+    private getPostById = (request: express.Request, response: express.Response, next: express.NextFunction) => {
         const { id } = request.params;
         this.postModel.findById(id)
             .then(post => {
@@ -46,7 +45,7 @@ class PostController implements Controller {
             });
     }
 
-    createPost = async (request: RequestWithUser, response: express.Response) => {
+    private createPost = async (request: RequestWithUser, response: express.Response) => {
         const postData: CreatePostDto = request.body;
         const createdPost = new this.postModel({
             ...postData,
@@ -57,7 +56,7 @@ class PostController implements Controller {
         response.send(savedPost);
     }
 
-    updatePost = (request: express.Request, response: express.Response, next: express.NextFunction) => {
+    private updatePost = (request: express.Request, response: express.Response, next: express.NextFunction) => {
         const { id } = request.params;
         const postData: Post = request.body;
         this.postModel.findByIdAndUpdate(id, postData, { new: true })
@@ -69,7 +68,7 @@ class PostController implements Controller {
             });
     }
 
-    deletePost = (request: express.Request, response: express.Response, next: express.NextFunction) => {
+    private deletePost = (request: express.Request, response: express.Response, next: express.NextFunction) => {
         const { id } = request.params;
         this.postModel.findByIdAndDelete(id)
             .then(successResponse => {

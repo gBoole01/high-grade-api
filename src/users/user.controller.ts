@@ -29,7 +29,7 @@ export default class UserController implements Controller {
         const { id } = request.params;
         const userQuery = this.userModel.findById(id);
         if (request.query.withPosts === 'true') {
-            userQuery.populate('posts');
+            userQuery.populate('posts').clone();
         }
         const user = await userQuery;
         if (user) {

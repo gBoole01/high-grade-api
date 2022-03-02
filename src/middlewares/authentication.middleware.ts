@@ -2,7 +2,7 @@ import { NextFunction, Response } from "express";
 import * as jwt from 'jsonwebtoken';
 import RequestWithUser from "../interfaces/RequestWithUser.interface";
 import DataStoredInAuthenticationToken from "../interfaces/DataStoredInAuthenticationToken.interface";
-import userModel from "../users/user.model";
+import userModel from "../domains/user/user.model";
 import WrongAuthenticationTokenException from "../exceptions/WrongAuthenticationTokenException";
 
 async function authenticationMiddleware(request: RequestWithUser, _response: Response, next: NextFunction) {

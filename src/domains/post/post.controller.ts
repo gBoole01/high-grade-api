@@ -1,9 +1,9 @@
 import * as express from 'express';
-import Controller from '../interfaces/Controller.interface';
-import Post from '../interfaces/Post.interface';
-import PostNotFoundException from '../exceptions/PostNotFoundException';
-import authenticationMiddleware from '../middlewares/authentication.middleware';
-import validationMiddleware from '../middlewares/validation.middleware';
+import Controller from '../../interfaces/Controller.interface';
+import Post from '../../interfaces/Post.interface';
+import PostNotFoundException from '../../exceptions/PostNotFoundException';
+import authenticationMiddleware from '../../middlewares/authentication.middleware';
+import validationMiddleware from '../../middlewares/validation.middleware';
 import postModel from './post.model';
 import CreatePostDto from './post.dto';
 import RequestWithUser from 'interfaces/RequestWithUser.interface';

@@ -1,8 +1,8 @@
 import validateEnv from './utils/validateEnv';
 import App from "./app";
-import AuthenticationController from "./authentication/authentication.controller";
-import PostController from "./post/post.controller";
-import UserController from './users/user.controller';
+import AuthenticationController from "./services/authentication/authentication.controller";
+import PostController from "./domains/post/post.controller";
+import UserController from './domains/user/user.controller';
 
 validateEnv();
 

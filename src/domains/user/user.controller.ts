@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response, Router } from "express";
-import Controller from "../interfaces/Controller.interface";
-import RequestWithUser from "../interfaces/RequestWithUser.interface";
-import authenticationMiddleware from "../middlewares/authentication.middleware";
+import Controller from "../../interfaces/Controller.interface";
+import RequestWithUser from "../../interfaces/RequestWithUser.interface";
+import authenticationMiddleware from "../../middlewares/authentication.middleware";
 import postModel from "../post/post.model";
 import userModel from "./user.model";
-import UserNotFoundException from "../exceptions/UserNotFoundException";
-import NotAuthorizedException from "../exceptions/NotAuthorizedException";
+import UserNotFoundException from "../../exceptions/UserNotFoundException";
+import NotAuthorizedException from "../../exceptions/NotAuthorizedException";
 
 export default class UserController implements Controller {
     public path = '/users';

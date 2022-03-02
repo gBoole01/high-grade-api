@@ -1,12 +1,12 @@
 import * as bcrypt from 'bcrypt';
 import * as express from 'express';
-import Controller from '../interfaces/Controller.interface';
+import Controller from '../../interfaces/Controller.interface';
 import AuthenticationService from './authentication.service';
-import userModel from '../users/user.model';
-import validationMiddleware from '../middlewares/validation.middleware';
-import CreateUserDto from '../users/user.dto';
+import userModel from '../../domains/user/user.model';
+import validationMiddleware from '../../middlewares/validation.middleware';
+import CreateUserDto from '../../domains/user/user.dto';
 import LogInDto from './logIn.dto';
-import WrongCredentialsException from '../exceptions/WrongCredentialsException';
+import WrongCredentialsException from '../../exceptions/WrongCredentialsException';
 
 export default class AuthenticationController implements Controller {
     public path = '/auth';

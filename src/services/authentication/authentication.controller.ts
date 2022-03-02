@@ -15,7 +15,7 @@ export default class AuthenticationController implements Controller {
 
     private authenticationService = new AuthenticationService();
 
-    private user = userModel;
+    private userModel = userModel;
 
     constructor() {
         this.initializeRoutes();
@@ -43,7 +43,7 @@ export default class AuthenticationController implements Controller {
 
     private loggingIn = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         const logInData: LogInDto = request.body;
-        const user = await this.user.findOne({ email: logInData.email });
+        const user = await this.userModel.findOne({ email: logInData.email });
         if (user) {
             const isPasswordMatching = await bcrypt.compare(
                 logInData.password,

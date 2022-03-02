@@ -8,7 +8,9 @@ import errorMiddleware from './middlewares/error.middleware';
 
 class App {
     public app: express.Application;
+
     private port: number;
+
     private dbConnectionURL: string;
 
     constructor(controllers: Controller[], port: number) {

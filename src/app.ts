@@ -8,7 +8,9 @@ import errorMiddleware from './middlewares/error.middleware';
 
 class App {
     public app: express.Application;
+
     private port: number;
+
     private dbConnectionURL: string;
 
     constructor(controllers: Controller[], port: number) {
@@ -43,7 +45,7 @@ class App {
 
     public listen() {
         this.app.listen(this.port, () => {
-            console.log(`App listening on the port ${this.port}`); // TODO => Implement better logger
+            // console.log(`App listening on the port ${this.port}`); // TODO => Implement better logger
         });
     }
 }

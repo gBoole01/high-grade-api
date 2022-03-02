@@ -1,11 +1,11 @@
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import userModel from '../users/user.model';
-import AuthenticationTokenData from '../interfaces/AuthenticationTokenData.interface';
-import DataStoredInAuthenticationToken from '../interfaces/DataStoredInAuthenticationToken.interface';
-import User from '../interfaces/User.interface';
-import CreateUserDto from '../users/user.dto';
-import EmailAlreadyInUseException from '../exceptions/EmailAlreadyInUseException';
+import userModel from '../../domains/user/user.model';
+import AuthenticationTokenData from '../../interfaces/AuthenticationTokenData.interface';
+import DataStoredInAuthenticationToken from '../../interfaces/DataStoredInAuthenticationToken.interface';
+import User from '../../interfaces/User.interface';
+import CreateUserDto from '../../domains/user/user.dto';
+import EmailAlreadyInUseException from '../../exceptions/EmailAlreadyInUseException';
 
 class AuthenticationService {
     public user = userModel;

@@ -1,16 +1,12 @@
 import * as bcrypt from 'bcrypt';
 import * as express from 'express';
-import * as jwt from 'jsonwebtoken';
-import Controller from '../interfaces/Controller.interface';
+import Controller from '../../interfaces/Controller.interface';
 import AuthenticationService from './authentication.service';
-import userModel from '../users/user.model';
-import validationMiddleware from '../middlewares/validation.middleware';
-import AuthenticationTokenData from 'interfaces/AuthenticationTokenData.interface';
-import DataStoredInAuthenticationToken from 'interfaces/DataStoredInAuthenticationToken.interface';
-import User from 'interfaces//User.interface';
-import CreateUserDto from '../users/user.dto';
+import userModel from '../../domains/user/user.model';
+import validationMiddleware from '../../middlewares/validation.middleware';
+import CreateUserDto from '../../domains/user/user.dto';
 import LogInDto from './logIn.dto';
-import WrongCredentialsException from '../exceptions/WrongCredentialsException';
+import WrongCredentialsException from '../../exceptions/WrongCredentialsException';
 
 export default class AuthenticationController implements Controller {
     public path = '/auth';
@@ -19,7 +15,7 @@ export default class AuthenticationController implements Controller {
 
     private authenticationService = new AuthenticationService();
 
-    private user = userModel;
+    private userModel = userModel;
 
     constructor() {
         this.initializeRoutes();
@@ -47,12 +43,15 @@ export default class AuthenticationController implements Controller {
 
     private loggingIn = async (request: express.Request, response: express.Response, next: express.NextFunction) => {
         const logInData: LogInDto = request.body;
-        const user = await this.user.findOne({ email: logInData.email });
+        const user = await this.userModel.findOne({ email: logInData.email });
         if (user) {
-            const isPasswordMatching = await bcrypt.compare(logInData.password, user.get('password', null, { getters: false }),);
+            const isPasswordMatching = await bcrypt.compare(
+                logInData.password,
+                user.get('password', null, { getters: false }),
+            );
             if (isPasswordMatching) {
-                const tokenData = this.createToken(user);
-                response.setHeader('Set-Cookie', [this.createCookie(tokenData)]);
+                const tokenData = this.authenticationService.createToken(user);
+                response.setHeader('Set-Cookie', [this.authenticationService.createCookie(tokenData)]);
                 response.send(user);
             } else {
                 next(new WrongCredentialsException());
@@ -65,21 +64,5 @@ export default class AuthenticationController implements Controller {
     private loggingOut = (_request: express.Request, response: express.Response) => {
         response.setHeader('Set-Cookie', ['Authorizatio;Max-age=0']);
         response.sendStatus(200);
-    }
-
-    private createCookie(tokenData: AuthenticationTokenData) {
-        return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`;
-    }
-
-    private createToken(user: User): AuthenticationTokenData {
-        const expiresIn = 60 * 60;
-        const secret = process.env.JWT_SECRET_KEY;
-        const dataStoredInToken: DataStoredInAuthenticationToken = {
-            _id: user._id,
-        };
-        return {
-            expiresIn,
-            token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
-        };
     }
 }

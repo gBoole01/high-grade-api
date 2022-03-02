@@ -6,7 +6,5 @@
 5. API Port is 5000 / MongoDB Webclient URL is 0.0.0.0:8081
 
 # TASKS
-- Add Prettier
 - Add Logger
-- Add Husky
 - Add Testing
